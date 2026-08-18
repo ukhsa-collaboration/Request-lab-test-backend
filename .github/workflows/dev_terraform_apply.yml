@@ -1,0 +1,29 @@
+name: "[CI] Deploy Terraform stacks to Dev"
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dev_deploy:
+    name: Deploy Development Terraform
+    concurrency:
+      group: "dev-main"
+    uses: UKHSA-Internal/devops-github-reusable-workflows/.github/workflows/terraform-plan-apply.yml@main
+    permissions:
+      packages: read
+      contents: read
+      security-events: write
+      statuses: write
+      checks: write
+      id-token: write
+    with:
+      environment_name: dev
+      execute_terraform_plan: true
+    secrets:
+      AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+      AWS_ROLE_NAME: ${{ secrets.AWS_ROLE_NAME }}
+      AZURE_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}"
+      AZURE_TENANT_ID: "${{ secrets.AZURE_TENANT_ID }}"
+      AZURE_SUBSCRIPTION_ID: "${{ secrets.AZURE_SUBSCRIPTION_ID }}"
+      TF_MODULES_SSH_DEPLOY_KEY: ${{ secrets.TF_MODULES_SSH_DEPLOY_KEY }}
