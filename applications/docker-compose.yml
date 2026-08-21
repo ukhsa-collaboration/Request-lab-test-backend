@@ -1,0 +1,162 @@
+services:
+
+  # --------------------------------------------------
+  # RLT Web
+  # --------------------------------------------------
+  rlt-web:
+    build:
+      context: ./rlt-web
+      dockerfile: ../rlt-web/Dockerfile
+      args:
+        VITE_ORCHESTRATOR_URL: http://localhost:4005
+    container_name: rlt-web
+    ports:
+      - "5173:80"
+    depends_on:
+      pathology-orchestrator:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # --------------------------------------------------
+  # RLT Orchestrator
+  # --------------------------------------------------
+  pathology-orchestrator:
+    build:
+      context: ./pathology-orchestrator
+      dockerfile: ../pathology-orchestrator/Dockerfile
+    container_name: pathology-orchestrator
+    environment:
+      PORT: "4005"
+      TERMINOLOGY_URL: http://terminology:4001
+      FHIR_ADAPTER_URL: http://fhir-adapter:4002
+      MOLIS_URL: http://fake-molis:4010
+      RESULT_ADAPTER_URL: http://result-adapter:4003
+    ports:
+      - "4005:4005"
+    depends_on:
+      terminology:
+        condition: service_healthy
+      fhir-adapter:
+        condition: service_healthy
+      fake-molis:
+        condition: service_healthy
+      result-adapter:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:4005/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    restart: unless-stopped
+
+  # --------------------------------------------------
+  # Terminology
+  # --------------------------------------------------
+  terminology:
+    build:
+      context: ./terminology
+      dockerfile: ../terminology/Dockerfile
+    container_name: rlt-terminology
+    environment:
+      PORT: "4001"
+    ports:
+      - "4001:4001"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:4001/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  # --------------------------------------------------
+  # FHIR Adapter
+  # --------------------------------------------------
+  fhir-adapter:
+    build:
+      context: ./fhir-adapter
+      dockerfile: ../fhir-adapter/Dockerfile
+    container_name: rlt-fhir-adapter
+    environment:
+      PORT: "4002"
+      MOLIS_URL: http://fake-molis:4010
+    ports:
+      - "4002:4002"
+    depends_on:
+      fake-molis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:4002/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  # --------------------------------------------------
+  # Fake MOLIS
+  # --------------------------------------------------
+  fake-molis:
+    build:
+      context: ./fake-molis
+      dockerfile: ../fake-molis/Dockerfile
+    container_name: rlt-fake-molis
+    environment:
+      PORT: "4010"
+    ports:
+      - "4010:4010"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:4010/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  # --------------------------------------------------
+  # Result Adapter
+  # --------------------------------------------------
+  result-adapter:
+    build:
+      context: ./result-adapter
+      dockerfile: ../result-adapter/Dockerfile
+    container_name: rlt-result-adapter
+    environment:
+      PORT: "4003"
+    ports:
+      - "4003:4003"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:4003/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  # --------------------------------------------------
+  # Legacy / low-level RLT API
+  #
+  # This is included because it exists in the original POC.
+  # The orchestrator is the preferred application entry point.
+  # --------------------------------------------------
+  api:
+    build:
+      context: ./api
+      dockerfile: ../api/Dockerfile
+    container_name: rlt-api
+    environment:
+      PORT: "4000"
+      TERMINOLOGY_URL: http://terminology:4001
+    ports:
+      - "4000:4000"
+    depends_on:
+      terminology:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:4000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped

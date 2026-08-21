@@ -1,0 +1,56 @@
+{
+  "resultId": "OBS-10001",
+
+  "accessionNumber": "MOLIS-10001",
+
+  "requestId": "RLT-10001",
+
+  "patient": {
+    "nhsNumber": "9999999999",
+    "firstName": "John",
+    "lastName": "Smith",
+    "dateOfBirth": "1975-03-12"
+  },
+
+  "laboratory": {
+    "organisationCode": "LAB001",
+    "name": "Fake MOLIS Pathology Laboratory"
+  },
+
+  "test": {
+
+    "localCode": "HBA1C",
+
+    "display": "Haemoglobin A1c",
+
+    "palmObservable": {
+      "system": "http://snomed.info/sct",
+      "code": "999791000000106",
+      "display": "Haemoglobin A1c level - International Federation of Clinical Chemistry and Laboratory Medicine standardised"
+    },
+
+    "pbcl": {
+      "system": "http://snomed.info/sct",
+      "code": "999791000000106",
+      "display": "Haemoglobin A1c level - International Federation of Clinical Chemistry and Laboratory Medicine standardised"
+    }
+  },
+
+  "result": {
+    "value": 48,
+
+    "unit": "mmol/mol",
+
+    "interpretation": "ABNORMAL",
+
+    "referenceRange": {
+      "low": 20,
+      "high": 42,
+      "unit": "mmol/mol"
+    }
+  },
+
+  "status": "FINAL",
+
+  "issuedAt": "2026-08-18T15:00:00Z"
+}

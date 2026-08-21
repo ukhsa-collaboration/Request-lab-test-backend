@@ -1,0 +1,95 @@
+{
+    "resourceType": "Bundle",
+    "type": "collection",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:report-MOLIS-10001",
+            "resource": {
+                "resourceType": "DiagnosticReport",
+                "id": "report-MOLIS-10001",
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "43396009",
+                            "display": "Haemoglobin A1c measurement"
+                        }
+                    ],
+                    "text": "Haemoglobin A1c measurement"
+                },
+                "subject": {
+                    "identifier": {
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "9999999999"
+                    },
+                    "display": "John Smith"
+                },
+                "effectiveDateTime": "2026-08-17T22:28:05.770Z",
+                "issued": "2026-08-17T22:28:05.770Z",
+                "performer": [
+                    {
+                        "display": "Fake MOLIS Pathology Laboratory"
+                    }
+                ],
+                "result": [
+                    {
+                        "reference": "Observation/263b4504-baef-4513-85a0-2dc1b6536ca9"
+                    }
+                ],
+                "conclusion": "ABNORMAL"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:263b4504-baef-4513-85a0-2dc1b6536ca9",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "263b4504-baef-4513-85a0-2dc1b6536ca9",
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "system": "http://snomed.info/sct",
+                            "code": "43396009",
+                            "display": "Haemoglobin A1c measurement"
+                        }
+                    ],
+                    "text": "Haemoglobin A1c measurement"
+                },
+                "subject": {
+                    "identifier": {
+                        "system": "https://fhir.nhs.uk/Id/nhs-number",
+                        "value": "9999999999"
+                    },
+                    "display": "John Smith"
+                },
+                "effectiveDateTime": "2026-08-17T22:28:05.770Z",
+                "valueQuantity": {
+                    "value": 48,
+                    "unit": "mmol/mol"
+                },
+                "referenceRange": [
+                    {
+                        "low": {
+                            "value": 20,
+                            "unit": "mmol/mol",
+                            "system": "http://unitsofmeasure.org",
+                            "code": "mmol/mol"
+                        },
+                        "high": {
+                            "value": 42,
+                            "unit": "mmol/mol",
+                            "system": "http://unitsofmeasure.org",
+                            "code": "mmol/mol"
+                        }
+                    }
+                ],
+                "interpretation": [
+                    {
+                        "text": "ABNORMAL"
+                    }
+                ]
+            }
+        }
+    ]
+}

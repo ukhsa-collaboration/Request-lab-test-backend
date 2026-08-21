@@ -1,0 +1,24 @@
+{
+  "requestId": "RLT-10001",
+
+  "patient": {
+    "nhsNumber": "9999999999",
+    "firstName": "John",
+    "lastName": "Smith",
+    "dateOfBirth": "1975-03-12"
+  },
+
+  "test": {
+    "localCode": "HBA1C",
+    "display": "Haemoglobin A1c"
+  },
+
+  "requester": {
+    "organisationCode": "RLT001",
+    "organisationName": "RLT GP Practice"
+  },
+
+  "specimen": {
+    "type": "Blood specimen"
+  }
+}
