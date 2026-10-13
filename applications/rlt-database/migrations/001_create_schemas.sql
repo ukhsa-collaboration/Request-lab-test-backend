@@ -1,0 +1,5 @@
+BEGIN;
+
+CREATE SCHEMA IF NOT EXISTS rlt_static;
+
+COMMIT;
